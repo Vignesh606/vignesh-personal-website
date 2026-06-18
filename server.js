@@ -54,7 +54,12 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
-// Server execution initialization
-app.listen(PORT, () => {
-    console.log(`[SYSTEM RUNNING] Server active on target interface port : ${PORT}`);
-});
+// Only listen locally; Vercel will handle execution in production
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`[SYSTEM RUNNING] Server active on port: ${PORT}`);
+    });
+}
+
+// CRITICAL: Export the app for Vercel's serverless environment
+module.exports = app;
